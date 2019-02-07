@@ -38,3 +38,20 @@ function readProducts() {
         }
     });
 }
+
+inquirer
+.prompt([
+{
+    type: "input",
+    message: "What is the ID of the product you would like to purchase?",
+    name: "ID"
+},
+{
+    type: "input",
+    message: "How many items would you like to purchase?",
+    name: "Quantity"
+},
+  ])
+  .then(answers => {
+    // Use user feedback for... whatever!!
+  });
