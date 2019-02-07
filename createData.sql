@@ -1,9 +1,13 @@
 DROP DATABASE IF EXISTS bamazon;
 
 CREATE database bamazon;
+
 USE bamazon;
-CREATE table products (item_id INT NOT NULL auto_increment, product_name VARCHAR (100), department_name VARCHAR (100)
-						, price DECIMAL (10,4), stock_quanity INT, PRIMARY KEY (item_id));
+
+CREATE table products 
+(item_id INT NOT NULL auto_increment, product_name VARCHAR (100), department_name VARCHAR (100), price DECIMAL (10,4), stock_quanity INT, PRIMARY KEY (item_id));
+
+
 INSERT INTO products (product_name, department_name, price, stock_quanity)
 VALUES
  ('TV','Electronics',300.00, 12)
