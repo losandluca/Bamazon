@@ -23,22 +23,18 @@ let readProducts = function () {
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
         //npm cli-table 
-        const dataTable = new Table({
+        let dataTable = new Table({
             head: ["Item ID", "Product Name", "Department", "Price", "Quantity"],
-            colWidths: [10, 25, 10, 10]
+            colWidths: [10, 25, 25, 10,14]
         });
         for (let i = 0; i < res.length; i++) {
             dataTable.push(
                 [res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quanity]
             );
         }
-        
-        
-        console.log(Table.toString());
+        console.log(dataTable.toString());
         promptPurchase();
-
     });
-  
 }
 
 //inquirer prompt to display the questions for the user
@@ -55,9 +51,9 @@ function promptPurchase() {
                 name: "Quantity"
             },
         ])
-        .then(answers => {
-            const requestID = answers.ID;
-            const quantityNeeded = answers.quantityNeeded;
+        .then(function(answers) {
+            let requestID = answers.ID;
+            let quantityNeeded = answers.Quantity;
             purchaseOrder(requestID, quantityNeeded);
         });
 };
@@ -67,12 +63,13 @@ function purchaseOrder(ID, amtNeeded){
 		if(err){console.log(err)};
 		if(amtNeeded <= res[0].stock_quantity){
 			var totalCost = res[0].price * amtNeeded;
-			console.log("Good news your order is in stock!");
-			console.log("Your total cost for " + amtNeeded + " " +res[0].product_name + " is " + totalCost + " Thank you!");
+            console.log("You're Item is in stock. Let us grab it for you real quick...");
+            
+			console.log("Your total cost for " + amtNeeded + " " +res[0].product_name + " is " + totalCost + " Thank you");
 
 			connection.query("UPDATE products SET stock_quantity = stock_quantity - " + amtNeeded + "WHERE item_id = " + ID);
 		} else{
-			console.log("Insufficient quantity, sorry we do not have enough " + res[0].product_name + "to complete your order.");
+			console.log("Insufficient quantity, sorry we do not have enough " + res[0].product_name + " to complete your order.");
 		};
 		readProducts();
 	});
