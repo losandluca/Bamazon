@@ -1,29 +1,27 @@
 //packages and database
 const inquirer = require("inquirer");
 const mysql = require("mysql");
-const table = require("cli-table");
+const Table = require("cli-table");
 
 //connections to mysql database and
 const connection = mysql.createConnection({
     host: "localhost",
-    port: 3500,
+    port: 3306,
     user: "root",
-    password: "root"
+    password: "root",
+    database: "bamazon"
 });
 
 connection.connect(function (err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId + "\n");
-
-    readProducts();
 });
 
 //function to display data into table in the terminal
-function readProducts() {
+let readProducts = function () {
     console.log("Selecting data into table within the terminal...\n");
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
-
         //npm cli-table 
         const dataTable = new Table({
             head: ["Item ID", "Product Name", "Department", "Price", "Quantity"],
@@ -34,11 +32,13 @@ function readProducts() {
                 [res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quanity]
             );
         }
-        console.log(table.toString());
+        
+        
+        console.log(Table.toString());
         promptPurchase();
 
-
     });
+  
 }
 
 //inquirer prompt to display the questions for the user
